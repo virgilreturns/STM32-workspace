@@ -123,12 +123,6 @@ int main(void)
 	EXTI->RTSR |= EXTI_RTSR_TR15;
 	EXTI->FTSR &= ~EXTI_FTSR_TR15;
 
-
-
-	uint8_t *data_buf = 0x69;
-	uint32_t length = 2;
-	
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -137,14 +131,12 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
   /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -164,17 +156,29 @@ int main(void)
   GPIOB->PUPDR |= GPIO_PUPDR_PUPD2_1;
 
 
+  //keep ss1 high before writing
+
+  SPI_SS1_SELECT();
+
+
+
+
+
+  uint8_t* data_buf = 0x69;
+  uint32_t length = 2;
+  HAL_SPI_Transmit_IT(&hspi1, data_buf, length, 1000);
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
   while (1)
   {
+
     /* USER CODE END WHILE */
-	  GPIOB->BSRR = GPIO_BSRR_BS1;
-	  HAL_Delay(100);
-	  GPIOB->BSRR = GPIO_BSRR_BR1;
-	  HAL_Delay(100);
+
 
     /* USER CODE BEGIN 3 */
   }
@@ -307,6 +311,7 @@ static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 /* USER CODE BEGIN MX_GPIO_Init_1 */
+	
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
@@ -322,6 +327,12 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
+  GPIO_InitStruct.Pin = SPI_SS1_PIN;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(SPI_SS1_PORT, &GPIO_InitStruct);
+
 /* USER CODE END MX_GPIO_Init_2 */
 }
 

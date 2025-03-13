@@ -74,6 +74,8 @@ void Error_Handler(void);
 
 #define SPI_SS1_PIN GPIO_PIN_9
 #define SPI_SS1_PORT GPIOA
+#define SPI_SS1_SELECT() GPIO_CLEAR_PIN(SPI_SS1_PORT, SPI_SS1_PIN)
+#define SPI_SS1_DESELECT() GPIO_SET_PIN(SPI_SS1_PORT, SPI_SS1_PIN)
 
 
 /* USER CODE END Private defines */
