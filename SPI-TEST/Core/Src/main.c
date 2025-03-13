@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stm32f4xx_hal_spi.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -122,25 +122,12 @@ int main(void)
 	EXTI->IMR |= 1<<15;
 	EXTI->RTSR |= EXTI_RTSR_TR15;
 	EXTI->FTSR &= ~EXTI_FTSR_TR15;
-	NVIC->
 
 
 
 	uint8_t *data_buf = 0x69;
 	uint32_t length = 2;
-
-	SPI1->CR1 |= SPI_CR1_SPE;
-
-	while (BIT_READ(SPI1->SR, SPI_SR_TXE_Pos, 0x1) == 0){
-	}
-
-	while (length > 0){
-	GPIO_CLEAR_PIN(GPIOA, 9);
-	*((volatile uint8_t*) &(SPI1->DR)) = *data_buf; //loaded in 8 bits at a time
-	data_buf++;
-	length--;
-
-	}
+	
 
   /* USER CODE END 1 */
 
