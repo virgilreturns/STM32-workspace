@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stm32f4xx_hal_spi.h"
+#include <stdlib.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,9 +61,7 @@ static void MX_SPI1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-#define GPIO_SET_PIN(port, pin) ((port)->BSRR = (pin)) //lower 16 bits sets a pin
-#define GPIO_CLEAR_PIN(port, pin) ((port->BSRR = pin << 16u)) //upper 16 bits resets a pin
-#define BIT_READ(reg, pos, mask) (((reg)>>(pos)) & (mask))
+
 
 /* USER CODE END 0 */
 
@@ -161,11 +160,9 @@ int main(void)
   SPI_SS1_SELECT();
 
 
+  uint8_t data_buf[] = { 0x4A }
+  uint8_t length = 1; //byte
 
-
-
-  uint8_t* data_buf = 0x69;
-  uint32_t length = 2;
   HAL_SPI_Transmit_IT(&hspi1, data_buf, length, 1000);
 
 
@@ -176,6 +173,11 @@ int main(void)
 
   while (1)
   {
+	  switch(state)
+	  {
+	  case 0:
+		  SPI_SS1_SELECT();
+
 
     /* USER CODE END WHILE */
 

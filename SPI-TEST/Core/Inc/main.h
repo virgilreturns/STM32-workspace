@@ -28,10 +28,15 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+#include "stm32f401xe.h"
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "stm32f4xx_hal.h"
+#include "stm32f401xe.h"
+#include <
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -72,6 +77,9 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN Private defines */
 
+#define GPIO_SET_PIN(port, pin) ((port)->BSRR = (pin)) //lower 16 bits sets a pin
+#define GPIO_CLEAR_PIN(port, pin) ((port->BSRR = pin << 16u)) //upper 16 bits resets a pin
+#define BIT_READ(reg, pos, mask) (((reg)>>(pos)) & (mask))
 #define SPI_SS1_PIN GPIO_PIN_9
 #define SPI_SS1_PORT GPIOA
 #define SPI_SS1_SELECT() GPIO_CLEAR_PIN(SPI_SS1_PORT, SPI_SS1_PIN)
